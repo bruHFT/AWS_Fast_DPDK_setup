@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Set noninteractive mode to suppress prompts
+export DEBIAN_FRONTEND=noninteractive
+
 # Update package index and upgrade packages
-sudo apt update
-sudo apt upgrade -y
-sudo apt-get update
+echo -e "\n" | sudo apt update
+echo -e "\n" | sudo apt upgrade -y
+echo -e "\n" | sudo apt-get update
 
 # Install necessary packages
 yes | sudo apt install -y git linux-headers-$(uname -r) build-essential libelf-dev libpcap-dev
