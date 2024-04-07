@@ -6,12 +6,11 @@ export DEBIAN_FRONTEND=noninteractive
 #!/bin/bash
 
 # Update package index and upgrade packages
-echo -e "\n" | sudo apt update
-# echo -e "\n" | sudo apt upgrade -y
-# echo -e "\n" | sudo apt-get update
+sudo apt update
+
 
 # Install necessary packages
-yes | sudo apt install -y git linux-headers-$(uname -r) build-essential libelf-dev libpcap-dev
+yes | sudo apt install -y linux-headers-$(uname -r) build-essential libelf-dev libpcap-dev
 yes | sudo apt-get install libnuma-dev
 # Install Meson and Ninja
 yes | sudo python3 -m pip install meson ninja pyelftools
