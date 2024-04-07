@@ -3,6 +3,8 @@
 # Set noninteractive mode to suppress prompts
 export DEBIAN_FRONTEND=noninteractive
 
+#!/bin/bash
+
 # Update package index and upgrade packages
 echo -e "\n" | sudo apt update
 # echo -e "\n" | sudo apt upgrade -y
