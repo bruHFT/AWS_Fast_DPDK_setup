@@ -10,15 +10,13 @@ sudo apt update
 
 
 # Install necessary packages
-yes | sudo apt install -y linux-headers-$(uname -r) build-essential libelf-dev libpcap-dev
-yes | sudo apt-get install libnuma-dev
-# Install Meson and Ninja
-yes | sudo python3 -m pip install meson ninja pyelftools
-pip3 install pyelftools --upgrade
+yes | sudo apt-get install libnuma-dev  # on Ubuntu
+yes | apt-get install git gcc openssl libssl-dev linux-headers-$(uname -r) bc libnuma1 libnuma-dev libpcre3 libpcre3-dev zlib1g-dev python
+# Install python3-pip and automatically select default option for restart prompt
 echo -e "\n" | sudo -E apt-get -y install python3-pip
-
-# Install development tools and dependencies
-echo -e "\n" | sudo apt install -y gcc make autoconf automake libtool
+yes | pip3 install pyelftools --upgrade
+yes | sudo python3 -m pip install meson ninja pyelftools
+echo -e "\n" | sudo apt install gcc make libssl-dev net-tools    
 
 
 # Clone dpdk-kmods repository
