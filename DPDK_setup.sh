@@ -18,7 +18,7 @@ pip3 install pyelftools --upgrade
 echo -e "\n" | sudo -E apt-get -y install python3-pip
 
 # Install development tools and dependencies
-yes | sudo apt install -y gcc make autoconf automake libtool
+echo -e "\n" | sudo apt install -y gcc make autoconf automake libtool
 
 
 # Clone dpdk-kmods repository
