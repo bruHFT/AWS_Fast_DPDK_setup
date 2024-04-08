@@ -8,7 +8,6 @@ export DEBIAN_FRONTEND=noninteractive
 # Update package index and upgrade packages
 sudo apt update
 
-
 # Install necessary packages
 yes | sudo apt-get install libnuma-dev  # on Ubuntu
 yes | apt-get install git gcc openssl libssl-dev linux-headers-$(uname -r) bc libnuma1 libnuma-dev libpcre3 libpcre3-dev zlib1g-dev python
@@ -16,7 +15,6 @@ yes | apt-get install git gcc openssl libssl-dev linux-headers-$(uname -r) bc li
 echo -e "\n" | sudo -E apt-get -y install python3-pip
 yes | pip3 install pyelftools --upgrade
 yes | sudo python3 -m pip install meson ninja pyelftools
-echo -e "\n" | sudo apt install gcc make libssl-dev net-tools    
 
 
 # Clone dpdk-kmods repository
