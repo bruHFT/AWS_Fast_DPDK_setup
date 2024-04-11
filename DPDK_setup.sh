@@ -51,20 +51,6 @@ python3 usertools/dpdk-devbind.py --status
 sudo ip link set ens6 down
 python3 usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
 
-
-
-
-# Set hugepage (Linux only)
-# single-node system
-echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-
-# Using Hugepage with the DPDK (Linux only)
-mkdir /mnt/huge
-mount -t hugetlbfs nodev /mnt/huge
-
-# Close ASLR; it is necessary in multiple process (Linux only)
-echo 0 > /proc/sys/kernel/randomize_va_space
-
 # Offload NIC
 modprobe uio
 insmod /data/f-stack/dpdk/build/kernel/linux/igb_uio/igb_uio.ko wc_activate=1
