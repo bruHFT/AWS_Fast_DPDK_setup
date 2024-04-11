@@ -17,40 +17,60 @@ yes | pip3 install pyelftools --upgrade
 yes | sudo python3 -m pip install meson ninja pyelftools
 
 
-# Clone dpdk-kmods repository
-git clone git://dpdk.org/dpdk-kmods
-cd dpdk-kmods/linux/igb_uio
-make
-sudo modprobe uio
-sudo insmod ./igb_uio.ko wc_activate=1
 
 # Clone dpdk-stable repository and checkout LTS version 22.11.4
 git clone git://dpdk.org/dpdk-stable
 cd dpdk-stable
 git checkout v22.11.3
 
-# Allocate hugepages
-echo 4096 | sudo tee /proc/sys/vm/nr_hugepages
-
-# Disable the interface
-sudo ip link set ens6 down
-
-# Bind the network interface to igb_uio driver
-sudo python3 usertools/dpdk-devbind.py --status
-sudo python3 usertools/dpdk-devbind.py --bind=igb_uio 00:06.0
-
-
 # Build DPDK
 meson -Denable_kmods=true -Ddisable_libs=flow_classify build
-cd build
-ninja
+ninja -C build
+ninja -C build install
 
-# Install DPDK libraries
-sudo ninja install
-sudo ldconfig
 
-# Run example application
-cd ..
-cd examples/helloworld/
+# Set hugepage (Linux only)
+# single-node system
+echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+# Using Hugepage with the DPDK (Linux only)
+mkdir /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+
+# Close ASLR; it is necessary in multiple process (Linux only)
+echo 0 > /proc/sys/kernel/randomize_va_space
+
+# Clone dpdk-kmods repository
+git clone git://dpdk.org/dpdk-kmods
+cd dpdk-kmods/linux/igb_uio
 make
-sudo ./dpdk-helloworld
+
+sudo modprobe uio
+sudo insmod ./igb_uio.ko wc_activate=1
+python3 usertools/dpdk-devbind.py --status
+sudo ip link set ens6 down
+python3 usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
+
+
+
+
+# Set hugepage (Linux only)
+# single-node system
+echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+# Using Hugepage with the DPDK (Linux only)
+mkdir /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+
+# Close ASLR; it is necessary in multiple process (Linux only)
+echo 0 > /proc/sys/kernel/randomize_va_space
+
+# Offload NIC
+modprobe uio
+insmod /data/f-stack/dpdk/build/kernel/linux/igb_uio/igb_uio.ko wc_activate=1
+insmod /data/f-stack/dpdk/build/kernel/linux/kni/rte_kni.ko carrier=on # carrier=on is necessary, otherwise need to be up `veth0` via `echo 1 > /sys/class/net/veth0/carrier`
+python3 usertools/dpdk-devbind.py --status
+sudo ip link set ens6 down
+python3 usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
+
+
