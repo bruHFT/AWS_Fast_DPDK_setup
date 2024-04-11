@@ -27,7 +27,7 @@ sudo insmod ./igb_uio.ko wc_activate=1
 # Clone dpdk-stable repository and checkout LTS version 22.11.4
 git clone git://dpdk.org/dpdk-stable
 cd dpdk-stable
-git checkout v22.11.4
+git checkout v22.11.3
 
 # Allocate hugepages
 echo 4096 | sudo tee /proc/sys/vm/nr_hugepages
