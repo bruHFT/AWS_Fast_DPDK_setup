@@ -22,7 +22,9 @@ cd /data/
 git clone git://dpdk.org/dpdk-stable
 cd dpdk-stable
 git checkout v22.11.3
-git checkout v23.11.0
+
+curl -O https://fast.dpdk.org/rel/dpdk-23.11.tar.xz
+
 
 
 # Build DPDK
