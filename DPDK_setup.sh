@@ -22,6 +22,8 @@ cd /data/
 git clone git://dpdk.org/dpdk-stable
 cd dpdk-stable
 git checkout v22.11.3
+git checkout v23.11.0
+
 
 # Build DPDK
 meson -Denable_kmods=true -Ddisable_libs=flow_classify build
