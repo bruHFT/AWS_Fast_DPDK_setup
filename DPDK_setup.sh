@@ -16,7 +16,7 @@ echo -e "\n" | sudo -E apt-get -y install python3-pip
 yes | pip3 install pyelftools --upgrade
 yes | sudo python3 -m pip install meson ninja pyelftools
 
-
+cd /data/
 
 # Clone dpdk-stable repository and checkout LTS version 22.11.4
 git clone git://dpdk.org/dpdk-stable
@@ -25,6 +25,7 @@ git checkout v22.11.3
 
 # Build DPDK
 meson -Denable_kmods=true -Ddisable_libs=flow_classify build
+meson -Dexamples=all  build
 ninja -C build
 ninja -C build install
 
@@ -47,16 +48,7 @@ make
 
 sudo modprobe uio
 sudo insmod ./igb_uio.ko wc_activate=1
-python3 usertools/dpdk-devbind.py --status
+python3 /data/dpdk-stable/usertools/dpdk-devbind.py  --status
 sudo ip link set ens6 down
-python3 usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
-
-# Offload NIC
-modprobe uio
-insmod /data/f-stack/dpdk/build/kernel/linux/igb_uio/igb_uio.ko wc_activate=1
-insmod /data/f-stack/dpdk/build/kernel/linux/kni/rte_kni.ko carrier=on # carrier=on is necessary, otherwise need to be up `veth0` via `echo 1 > /sys/class/net/veth0/carrier`
-python3 usertools/dpdk-devbind.py --status
-sudo ip link set ens6 down
-python3 usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
-
-
+python3 /data/dpdk-stable/usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
+cd /data/Private_DPDK/
