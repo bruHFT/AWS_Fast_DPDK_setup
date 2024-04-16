@@ -1,0 +1,21 @@
+cd /data/dpdk-stable/
+
+# Set hugepage (Linux only)
+# single-node system
+echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+# Using Hugepage with the DPDK (Linux only)
+mkdir /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+
+# Close ASLR; it is necessary in multiple process (Linux only)
+echo 0 > /proc/sys/kernel/randomize_va_space
+cd dpdk-kmods/linux/igb_uio
+
+
+sudo modprobe uio
+sudo insmod ./igb_uio.ko wc_activate=1
+python3 /data/dpdk-stable/usertools/dpdk-devbind.py  --status
+sudo ip link set ens6 down
+python3 /data/dpdk-stable/usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
+cd /data/Private_DPDK/
