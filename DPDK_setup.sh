@@ -16,6 +16,7 @@ echo -e "\n" | sudo -E apt-get -y install python3-pip
 yes | pip3 install pyelftools --upgrade
 yes | sudo python3 -m pip install meson ninja pyelftools
 
+mkdir -p /data
 cd /data/
 
 # Clone dpdk-stable repository and checkout LTS version 22.11.4
