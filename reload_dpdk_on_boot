@@ -18,4 +18,4 @@ sudo insmod ./igb_uio.ko wc_activate=1
 python3 /data/dpdk-stable/usertools/dpdk-devbind.py  --status
 sudo ip link set ens6 down
 python3 /data/dpdk-stable/usertools/dpdk-devbind.py --bind=igb_uio ens6 # assuming that use 10GE NIC
-cd /data/Private_DPDK/bin
+cd /data/DPDK_udp_forwarder/bin
